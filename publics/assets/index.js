@@ -1,7 +1,7 @@
 function sendCommand() {
     const commandInput = document.getElementById('commandInput').value;
     
-    fetch('/execute', {
+    fetch('http://localhost:3000/execute', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

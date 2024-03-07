@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.getElementById("loginForm");
-  const output = document.getElementById("output");
+//   const output = document.getElementById("output");
 
   loginForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = document.getElementById("loginPassword").value;
 
     try {
-      const response = await fetch("/login", {
+      const response = await fetch("http://localhost:3000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -23,10 +23,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const data = await response.text();
       console.log(data);
-      output.textContent = data;
-      window.location.href = "/home";
+    //   output.textContent = data;
+    // data ? window.location.href = "/publics/assets/list/list.html" : '';
     } catch (error) {
-      output.textContent = error.message;
+        console.error("Error:", error);
     }
   });
 });
