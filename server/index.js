@@ -1,4 +1,4 @@
-﻿const express = require('express');
+const express = require('express');
 const bodyParser = require('body-parser');
 const Sequelize = require('sequelize');
 const bcrypt = require('bcrypt');
@@ -6,13 +6,11 @@ const bcrypt = require('bcrypt');
 const app = express();
 const port = 3000;
 
-// Initialisation de Sequelize
-const sequelize = new Sequelize('nom_de_votre_base_de_donnees', 'votre_utilisateur_postgres', 'votre_mot_de_passe_postgres', {
+const sequelize = new Sequelize('iptables', 'firewall', '123qwerty', {
   host: 'localhost',
   dialect: 'postgres'
 });
 
-// Définition du modèle User
 const User = sequelize.define('user', {
   username: {
     type: Sequelize.STRING,
@@ -25,21 +23,17 @@ const User = sequelize.define('user', {
   }
 });
 
-// Méthode pour le chiffrement du mot de passe avant de sauvegarder
 User.beforeCreate(async (user) => {
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
 });
 
-// Méthode de vérification du mot de passe
 User.prototype.validPassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
-// Middleware pour parser les données du formulaire
 app.use(bodyParser.json());
 
-// Route pour l'inscription (sign-up)
 app.post('/signup', async (req, res) => {
   const { username, password } = req.body;
 
@@ -56,7 +50,6 @@ app.post('/signup', async (req, res) => {
   }
 });
 
-// Route pour la connexion (log-in)
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
@@ -78,14 +71,11 @@ app.post('/login', async (req, res) => {
   }
 });
 
-// Synchronisation du modèle avec la base de données (force: true pour recréer les tables)
 sequelize.sync({ force: true })
   .then(() => {
     console.log('Base de données synchronisée.');
-    // Exemple de création d'un utilisateur
     createUser("utilisateur1", "motdepasse123");
 
-    // Exemple d'authentification d'un utilisateur
     authenticateUser("utilisateur1", "motdepasse123");
     authenticateUser("utilisateur1", "motdepasse456");
   })
@@ -93,7 +83,6 @@ sequelize.sync({ force: true })
     console.error('Erreur lors de la synchronisation de la base de données:', error);
   });
 
-// Fonction pour créer un utilisateur
 async function createUser(username, password) {
   try {
     const user = await User.create({
@@ -106,7 +95,6 @@ async function createUser(username, password) {
   }
 }
 
-// Fonction pour authentifier un utilisateur
 async function authenticateUser(username, password) {
   try {
     const user = await User.findOne({ where: { username: username } });
@@ -125,7 +113,6 @@ async function authenticateUser(username, password) {
   }
 }
 
-// Serveur écoutant sur le port 3000
 app.listen(port, () => {
   console.log(`Serveur en écoute sur le port ${port}`);
 });
