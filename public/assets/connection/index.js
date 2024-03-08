@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.getElementById("loginForm");
-//   const output = document.getElementById("output");
+  const output = document.getElementById("output");
 
   loginForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -23,8 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const data = await response.text();
       console.log(data);
-    //   output.textContent = data;
-    // data ? window.location.href = "/publics/assets/list/list.html" : '';
+      output.innerText = data;
     } catch (error) {
         console.error("Error:", error);
     }

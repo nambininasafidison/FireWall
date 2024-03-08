@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const username = document.getElementById("signupUsername").value;
     const password = document.getElementById("signupPassword").value;
-    // console.log(username);
     try {
       const response = await fetch("http://localhost:3000/signup", {
         method: "POST",
@@ -17,8 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       const data = await response.text();
-      console.log(data);
-    // data ? window.location.href = "/publics/assets/connection/connection.html" : '';
+      // data = JSON.parse(data);
+      // console.log(data);
+      // document.getElementById("output").innerText = data.message;
     } catch (error) {
       console.error("Error:", error);
     }

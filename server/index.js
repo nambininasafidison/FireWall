@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const Sequelize = require("sequelize");
 const bcrypt = require("bcrypt");
+const path = require("path");
 const { exec } = require("child_process");
 const session = require("express-session");
 
@@ -13,7 +14,11 @@ const sequelize = new Sequelize("iptables", "firewall", "123qwerty", {
   dialect: "postgres",
 });
 
-const noAuthPages = ["/publics/index.html", "/publics/assets/connection.html", "/publics/assets/signup.html"];
+const noAuthPages = [
+  "/index.html",
+  "/assets/connection/connection.html",
+  "/assets/signup/signup.html",
+];
 
 const User = sequelize.define("user", {
   username: {
@@ -27,33 +32,24 @@ const User = sequelize.define("user", {
   },
 });
 
-app.use(express.static("public"));
+app.get("/", (req, res) => {
+  res.sendFile("index.html", { root: path.join(__dirname, "..", "public") });
+});
+
+app.use(express.static(path.join(__dirname, "..", "public")));
 app.use(express.json());
 app.use(cors());
 
-app.use(session({
-  secret: "social",
-  resave: false,
-  saveUninitialized: false,
-}));
-
-app.use((req, res, next) => {
-  if (!req.session.user) {
-    if (!noAuthPages.includes(req.path)) {
-      res.redirect("/publics/index.html");
-    } else {
-      next();
-    }
-  } else {
-    if (noAuthPages.includes(req.path)) {
-      res.redirect("/publics/assets/list/list.html");
-    } else {
-      next();
-    }
-  }
-});
+app.use(
+  session({
+    secret: "social",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 
+app.use(checkSession);
 
 User.beforeCreate(async (user) => {
   const salt = await bcrypt.genSalt(10);
@@ -64,17 +60,15 @@ User.prototype.validPassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
-
-
 app.post("/signup", async (req, res) => {
   const { username, password } = req.body;
   console.log(req.body);
 
   try {
     const user = await createUser(username, password);
-    res.status(201).json({ message: "Utilisateur créé", user: user });
+    res.status(201).json({ message: "User created", user: user });
   } catch (error) {
-    res.status(500).json({ message: "Erreur lors de la création de l'utilisateur", error: error });
+    res.status(500).json({ message: "Error to create user", error: error });
   }
 });
 
@@ -84,15 +78,22 @@ app.post("/login", async (req, res) => {
   try {
     const user = await authenticateUser(username, password);
     if (user) {
+      req.session.user = user;
       res.status(200).json({ message: "Utilisateur authentifié", user: user });
     } else {
-      res.status(401).json({ message: "Utilisateur non trouvé ou mot de passe incorrect" });
+      res
+        .status(401)
+        .json({ message: "Utilisateur non trouvé ou mot de passe incorrect" });
     }
   } catch (error) {
-    res.status(500).json({ message: "Erreur lors de l'authentification de l'utilisateur", error: error });
+    res
+      .status(500)
+      .json({
+        message: "Erreur lors de l'authentification de l'utilisateur",
+        error: error,
+      });
   }
 });
-
 
 app.post("/logout", (req, res) => {
   req.session.destroy((err) => {
@@ -100,11 +101,11 @@ app.post("/logout", (req, res) => {
       console.error("Erreur lors de la suppression de la session :", err);
       res.status(500).send("Erreur lors de la suppression de la session.");
     } else {
-      res.redirect("/publics/index.html");
+      req.session.user = null;
+      res.redirect("/index.html");
     }
   });
 });
-
 
 app.post("/execute", (req, res) => {
   const command = req.body.command;
@@ -113,7 +114,7 @@ app.post("/execute", (req, res) => {
 });
 
 sequelize
-  .sync({ force: true })
+  .sync({ alter: true })
   .then(() => {
     console.log("Base de données synchronisée.");
   })
@@ -124,6 +125,20 @@ sequelize
     );
   });
 
+async function checkSession(req, res, next) {
+  const user = req.session.user;
+  const isLoggedIn = user != null;
+  const path = req.path;
+  const isNoAuthPage = noAuthPages.includes(path);
+  if (isLoggedIn && isNoAuthPage) {
+    res.redirect("/assets/list/list.html");
+  } else if (!isLoggedIn && !isNoAuthPage) {
+    res.redirect("/index.html");
+  } else {
+    next();
+  }
+}
+
 async function createUser(username, password) {
   const user = await User.create({
     username: username,
@@ -133,7 +148,7 @@ async function createUser(username, password) {
   return user;
 }
 
-async function runCommand(command, res){
+async function runCommand(command, res) {
   exec(command, (error, stdout, stderr) => {
     if (error) {
       console.error(`Error executing command: ${error.message}`);
@@ -168,5 +183,7 @@ async function authenticateUser(username, password) {
 }
 
 app.listen(port, () => {
-  console.log(`Serveur en écoute sur le port localhost:${port}`);
+  console.log(`Serveur en écoute sur le port ${port}`);
 });
+
+//santatraherimampionona@gmail.com
