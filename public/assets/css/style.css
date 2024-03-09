@@ -1,0 +1,99 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: pop;
+}
+
+@font-face {
+  font-family: pop;
+  src: url(../outils/FontsFree-Net-Poppins-Medium.ttf);
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  background-image: url(../outils/fire.jpg);
+  background-size: cover;
+  background-position: center;
+  backdrop-filter: blur(2px);
+}
+
+.main {
+  width: 35vw;
+  height: 90vh;
+  padding: 5vh;
+  background-color: #0a268099;
+  backdrop-filter: blur(8px);
+  margin: 5vh 5vw;
+  border-radius: 1vw;
+}
+
+.others {
+  width: 65vw;
+  height: 100vh;
+}
+
+h1 {
+  font-weight: bolder;
+  font-size: 1.5vw;
+  color: #fff;
+}
+
+p {
+  font-size: 0.8vw;
+  color: #aaa;
+  margin: 3vh 0;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+}
+
+.login label {
+  font-size: 0.8vw;
+  color: #aaa;
+}
+
+.login input {
+  margin: 4vh 0;
+  height: 6vh;
+  font-size: 0.8vw;
+  border-radius: 0.2vw;
+  border: 1px solid #aaa;
+  padding: 0 1vw;
+  background: none;
+}
+
+.login .submit {
+  margin: 5vh 0;
+  height: 6vh;
+  font-size: 0.8vw;
+  border-radius: 0.2vw;
+  border: none;
+  padding: 0 1vw;
+  background-color: #0080fe;
+  color: #eee;
+}
+
+.sign {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  margin: 9vh 0;
+}
+
+.sign a {
+  margin: 0 1vw;
+  font-size: 0.8vw;
+  color: #0080fe;
+  text-decoration: none;
+}
+
+.sign a:hover {
+  color: #9d0ec9;
+  text-decoration: underline;
+}

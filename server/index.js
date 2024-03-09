@@ -16,7 +16,7 @@ const sequelize = new Sequelize("iptables", "firewall", "123qwerty", {
 
 const noAuthPages = [
   "/index.html",
-  "/assets/connection/connection.html",
+  "/assets/home/home.html",
   "/assets/signup/signup.html",
 ];
 
@@ -48,8 +48,7 @@ app.use(
   })
 );
 
-
-app.use(checkSession);
+// app.use(checkSession);
 
 User.beforeCreate(async (user) => {
   const salt = await bcrypt.genSalt(10);
@@ -102,7 +101,6 @@ app.post("/logout", (req, res) => {
       res.status(500).send("Erreur lors de la suppression de la session.");
     } else {
       req.session.user = null;
-      res.redirect("/index.html");
     }
   });
 });
@@ -125,21 +123,8 @@ sequelize
     );
   });
 
-async function checkSession(req, res, next) {
-  const user = req.session.user;
-  const isLoggedIn = user != null;
-  const path = req.path;
-  const isNoAuthPage = noAuthPages.includes(path);
-  if (isLoggedIn && isNoAuthPage) {
-    res.redirect("/assets/list/list.html");
-  } else if (!isLoggedIn && !isNoAuthPage) {
-    res.redirect("/index.html");
-  } else {
-    next();
-  }
-}
-
-async function createUser(username, password) {
+  
+  async function createUser(username, password) {
   const user = await User.create({
     username: username,
     password: password,
@@ -187,3 +172,17 @@ app.listen(port, () => {
 });
 
 //santatraherimampionona@gmail.com
+
+// async function checkSession(req, res, next) {
+//   const user = req.session.user;
+//   const isLoggedIn = user != null;
+//   const path = req.path;
+//   const isNoAuthPage = noAuthPages.includes(path);
+//   if (isLoggedIn && isNoAuthPage) {
+//     res.redirect("/assets/list/list.html");
+//   } else if (!isLoggedIn && !isNoAuthPage) {
+//     res.redirect("/index.html");
+//   } else {
+//     next();
+//   }
+// }

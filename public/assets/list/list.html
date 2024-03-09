@@ -3,17 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="list.css">
-    <link rel="stylesheet" href="../style.css">
-    <title>Iptables list</title>
+    <link rel="stylesheet" href="../css/list.css">
+    <title>List</title>
 </head>
-<body>
-    <div class="container">
-        <h1>Command App</h1>
-        <textarea id="commandInput" placeholder="Enter command here..."></textarea>
-        <button onclick="sendCommand()">Run Command</button>
-        <div id="output"></div>
-    </div>
-    <script src="../index.js"></script>
-</body>
+  <body>
+    <nav>
+      <div class="log"></div>
+      <p>Log out</p>
+    </nav>
+    <section class="main">
+      <select name="policy" id="policy">
+        <option value="input">INPUT</option>
+        <option value="forward">FORWARD</option>
+        <option value="output">OUTPUT</option>
+      </select>
+      <p>
+        You can see the list of all existing rules of your firewall
+        configuration.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>target</th>
+            <th>prot</th>
+            <th>opt</th>
+            <th>source</th>
+            <th>destination</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <td>1</td>
+          <td>ufw</td>
+          <td>all</td>
+          <td>--</td>
+          <td>anywere</td>
+          <td>anywere</td>
+          <td class="action">
+            <button class="modif"><div class="modifImg"></div></button>
+            <button class="delete"><div class="trash"></div></button>
+          </td>
+        </tbody>
+      </table>
+      <div class="sign">
+        <p>Navigate to home page?</p>
+        <a href="../home/home.html">Home</a>
+      </div>
+    </section>
+    <script src="index.js"></script>
+  </body>
 </html>
