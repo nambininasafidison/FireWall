@@ -13,7 +13,7 @@
   body {
     width: 100vw;
     height: 100vh;
-    overflow: hidden;
+    /* overflow: hidden; */
     background-image: url(../outils/fire.jpg);
     background-size: cover;
     background-position: center;
@@ -36,13 +36,12 @@ nav .log{
 
 nav p{
   position: absolute;
-  top: 3vw;
-  right: 3vw;
+  top: .3vw;
+  right: 5vw;
   border-radius: .2vw;
   font-size: 1.5vw;
-  background-color: #fff3;
+  background: none;
   width: 7vw;
-  display: none;
   color: #fff;
   font-weight: bolder;
 }
@@ -55,7 +54,6 @@ nav:hover p{
 .main{
   width: 90vw;
   height: 90vh;
-  background-color: #4449;
   border-radius: .5vw;
   backdrop-filter: blur(5px);
   padding: 1vw;
@@ -64,15 +62,17 @@ nav:hover p{
 .main select {
   margin: 1vh 0;
   height: 4vh;
-  font-size: 0.8vw;
+  font-size: 0.9vw;
   border-radius: 0.2vw;
-  border: 1px solid #aaa;
+  border: 2px solid #1E425D;
   padding: 0 0.5vw;
   position: absolute;
-  top: 0;
+  top: -4vh;
+  left: -4vw;
   font-weight: bolder;
   font-size: 1vw;
-  color: #555;
+  color: #000;
+  background: none;
 }
 
 
@@ -87,7 +87,7 @@ nav:hover p{
   width: 88vw;
   font-size: 1vw;
   max-height: 75vh;
-  border-spacing: 0 .5vh;
+  border-spacing: 0 1vh;
 }
 
 .multi table::-webkit-scrollbar {
@@ -104,18 +104,20 @@ nav:hover p{
 }
 
 .main thead{
-  background-color: #164bbe;
+  background-color: #0ccc2c;
   text-align: left;
+  color: #fff;
 }
 
 .main tbody{
-  color: #bbb;
-  background-color: #111;
+  color: #111;
+  background: none;
+  font-weight: bolder;
 }
 
 .main tr{
-  height: 5vh;
-  box-shadow: 0 0 .3vw #fff;
+  height: 6vh;
+  box-shadow: 0 0 .6vw #45b9ff;
 }
 
 .main td,th{
@@ -130,11 +132,12 @@ nav:hover p{
 }
 
 .main button{
-  background-color: #888;
+  background-color: #0ccc2c;
   width: 3vw;
-  padding: .3vh .9vw;
+  padding: 1vh .9vw;
   margin-top: 1vh;
   border-radius: .4vw;
+  border: none;
 
 }
 
@@ -164,12 +167,13 @@ nav:hover p{
 
 .sign p{
   font-size: 1vw;
-  color: #aaa;
+  color: #222;
+  font-weight: bolder;
 }
 
 .sign a {
   font-size: 1vw;
-  color: #aaa;
+  color: #fff;
   text-decoration: none;
   margin: 0 1vw;
 }

@@ -12,11 +12,12 @@
       <p>Log out</p>
     </nav>
     <section class="main">
-      <div class="head">
-        <h1>ADD</h1>
-        <p>You can add new rules for your firewall configuration.</p>
-      </div>
-      <form class="login signup" action="" method="post">
+      <p>
+        <span style="color: #fff">FireWall</span> | Configure network filter
+      </p>
+      <p>You can add new rules for your firewall configuration.</p>
+
+      <form style="margin-top: 2vh;" class="login signup" action="" method="post">
         <label for="policy">Policy</label>
         <select name="policy" id="policy">
           <option value="input">INPUT</option>
@@ -37,20 +38,30 @@
         <select name="protocol" id="protocol">
           <option value="none">none</option>
         </select>
-        <label for="port">Port</label>
-        <input type="text" name="port" id="port" />
+        <input
+          type="text"
+          name="port"
+          id="port"
+          placeholder="Port e.g: 80, 443,..."
+        />
         <div class="check">
           <input type="checkbox" name="agree" id="agree" />
           <label for="agree">Multi-port</label>
         </div>
-        <label for="ip">IP</label>
-        <input type="text" name="ip" id="ip" />
-        <label for="mac">Mac</label>
-        <input type="text" name="mac" id="mac" />
-        <label for="source">Source</label>
-        <input type="text" name="source" id="source" />
-        <label for="destination">Destination</label>
-        <input type="text" name="destination" id="destination" />
+        <input type="text" name="ip" id="ip" placeholder="IP address" />
+        <input type="text" name="mac" id="mac" placeholder="Mac address" />
+        <input
+          type="text"
+          name="source"
+          id="source"
+          placeholder="Source e.g: www.google.com"
+        />
+        <input
+          type="text"
+          name="destination"
+          id="destination"
+          placeholder="Destination e.g: www.youtube.com"
+        />
         <div class="confirm">
           <button class="cancel">Cancel</button>
           <input type="submit" value="Add Rules" class="submit" />
@@ -60,9 +71,6 @@
         <p>Navigate to home page?</p>
         <a href="../home/home.html">Home</a>
       </div>
-    </section>
-    <section class="others">
-      <div class="img"></div>
     </section>
     <section class="multi">
       <div class="number">

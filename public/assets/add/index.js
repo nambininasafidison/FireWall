@@ -1,17 +1,16 @@
 let port = document.querySelector("#agree");
+let multi = document.querySelector(".multi");
 port.addEventListener("change", () => {
-  port.checked
-    ? (document.querySelector(".multi").style.display = "block")
-    : (document.querySelector(".mutli").style.display = "none");
+  multi.style.display = port.checked ? "block" : "none";
 });
 
 const subs = document.querySelector(".submitPorts");
 subs.addEventListener("click", () => {
   const n = document.querySelector("#ports").value;
-  console.log(n);
+  console.log(document.querySelector("#ports").max);
   const form = document.createElement("form");
   const container = document.querySelector(".container");
-  if (n <= document.querySelector("#ports").max) {
+  if (n <= +document.querySelector("#ports").max) {
     for (let i = 1; i <= n; i++) {
       const input = document.createElement("input");
       input.type = "number";

@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const path = require("path");
 const { exec } = require("child_process");
 const session = require("express-session");
+const { createProxyMiddleware } = require("http-proxy-middleware");
 
 const app = express();
 const port = 3000;
@@ -36,7 +37,7 @@ app.get("/", (req, res) => {
   res.sendFile("index.html", { root: path.join(__dirname, "..", "public") });
 });
 
-app.use(express.static(path.join(__dirname, "..", "public")));
+app.use("/", express.static(path.join(__dirname, "..", "public")));
 app.use(express.json());
 app.use(cors());
 
@@ -45,6 +46,14 @@ app.use(
     secret: "social",
     resave: false,
     saveUninitialized: false,
+  })
+);
+
+app.use(
+  "/",
+  createProxyMiddleware({
+    target: "http://localhost:3000",
+    changeOrigin: true,
   })
 );
 
@@ -85,12 +94,10 @@ app.post("/login", async (req, res) => {
         .json({ message: "Utilisateur non trouvé ou mot de passe incorrect" });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "Erreur lors de l'authentification de l'utilisateur",
-        error: error,
-      });
+    res.status(500).json({
+      message: "Erreur lors de l'authentification de l'utilisateur",
+      error: error,
+    });
   }
 });
 
@@ -123,8 +130,7 @@ sequelize
     );
   });
 
-  
-  async function createUser(username, password) {
+async function createUser(username, password) {
   const user = await User.create({
     username: username,
     password: password,
@@ -166,6 +172,8 @@ async function authenticateUser(username, password) {
     return null;
   }
 }
+
+port = 80;
 
 app.listen(port, () => {
   console.log(`Serveur en écoute sur le port ${port}`);

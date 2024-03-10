@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
-
       let data = await response.text();
       console.log(data);
       window.location.href = "/assets/home/home.html";

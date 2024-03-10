@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let data = await response.text();
       data = JSON.parse(data);
       console.log(data);
-      window.location.href = "http://localhost:3000/index.html";
+      window.location.href = "http://localhost:3000/";
     } catch (error) {
       console.error("Error:", error);
     }

@@ -18,14 +18,19 @@ body {
   background-image: url(../outils/fire.jpg);
   background-size: cover;
   background-position: center;
+  /* background-color: #05253A; */
+  backdrop-filter: blur(2px);
 }
 
 .main {
   width: 35vw;
   height: 90vh;
-  padding: 0 10vh;
-  background-color: #1134a6;
+  padding: 0 5vh;
+  padding-top: 3vh;
+  background-color: #0d3451;
+  /* backdrop-filter: blur(8px); */
   margin: 5vh 5vw;
+  border-radius: 0.5vw;
 }
 
 .others {
@@ -40,13 +45,14 @@ body {
 
 h1 {
   font-weight: bolder;
-  font-size: 3vw;
+  font-size: 1.5vw;
+  color: #fff;
 }
 
 p {
-  font-size: 0.8vw;
+  font-size: 0.9vw;
   color: #aaa;
-  margin: 0 2vw;
+  margin: 0.3vh 0;
 }
 
 .login {
@@ -55,45 +61,52 @@ p {
 }
 
 .login label {
-  font-size: 0.8vw;
+  font-size: 0.9vw;
   color: #aaa;
 }
 
 .login input {
   margin: 1vh 0;
   height: 4vh;
-  font-size: 0.8vw;
+  font-size: 0.9vw;
   border-radius: 0.2vw;
-  border: 1px solid #aaa;
+  border: 2px solid #1e425d;
   padding: 0 1vw;
+  background: none;
 }
 
 .login select {
   margin: 1vh 0;
   height: 4vh;
-  font-size: 0.8vw;
+  font-size: 0.9vw;
   border-radius: 0.2vw;
-  border: 1px solid #aaa;
+  border: 2px solid #1e425d;
   padding: 0 0.5vw;
+  background: none;
+  color: #000;
 }
 
 .login .confirm {
   display: flex;
-  margin-bottom: 1vh;
   justify-content: space-between;
+  align-items: center;
 }
 
 .login .submit {
-  background-color: #0080fe;
+  margin: 1vh 0;
+  height: 5vh;
+  font-size: 0.9vw;
+  border-radius: 0.2vw;
+  border: none;
+  padding: 0 1vw;
+  background-color: #45b9ff;
   color: #eee;
-  margin: 0;
-  font-weight: bolder;
 }
 
 .login .cancel {
   padding: 0 2vw;
-  height: 4vh;
-  font-size: 0.8vw;
+  height: 5vh;
+  font-size: 0.9vw;
   border-radius: 0.2vw;
   border: none;
   background-color: #f00;
@@ -113,12 +126,15 @@ p {
 .sign {
   display: flex;
   justify-content: center;
+  align-items: center;
+  margin-top: -1vh;
 }
 
 .sign a {
-  font-size: 0.8vw;
-  color: #aaa;
+  font-size: 0.9vw;
+  color: #45b9ff;
   text-decoration: none;
+  margin: 0 1vw;
 }
 
 .sign a:hover {
@@ -129,7 +145,7 @@ p {
 .multi {
   position: absolute;
   width: 20vw;
-  background-color: #7779;
+  background-color: #1118;
   min-height: 60vh;
   padding: 2vh 1vw;
   margin: 20vh 33vw;
@@ -139,17 +155,19 @@ p {
 }
 
 .multi label {
-  font-size: 0.8vw;
-  color: #222;
+  font-size: 0.9vw;
+  color: #eee;
 }
 
 .multi input {
   margin: 1vh 0;
   height: 4vh;
-  font-size: 0.8vw;
+  font-size: 0.9vw;
   border-radius: 0.2vw;
-  border: 1px solid #aaa;
+  border: 2px solid #1e425d;
   padding: 0 0.5vw;
+  background: none;
+  color: #fff;
 }
 
 .multi .number {
@@ -163,7 +181,7 @@ p {
 }
 
 .multi .submit {
-  background-color: #0080fe;
+  background-color: #45b9ff;
   color: #eee;
   height: 4vh;
   padding: 0 0.5vw;
@@ -208,18 +226,12 @@ nav .log {
 
 nav p {
   position: absolute;
-  top: 3vw;
-  right: 3vw;
+  top: 0.5vh;
+  right: 4vw;
   border-radius: 0.2vw;
   font-size: 1.5vw;
-  background-color: #fff3;
+  background: none;
   width: 7vw;
-  display: none;
   color: #fff;
   font-weight: bolder;
-}
-
-nav:hover p {
-  transition: all 2s;
-  display: block;
 }

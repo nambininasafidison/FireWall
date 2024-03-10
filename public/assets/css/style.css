@@ -25,7 +25,7 @@ body {
   width: 35vw;
   height: 90vh;
   padding: 5vh;
-  background-color: #0a268099;
+  background-color: #0D3451;
   backdrop-filter: blur(8px);
   margin: 5vh 5vw;
   border-radius: 1vw;
@@ -43,7 +43,7 @@ h1 {
 }
 
 p {
-  font-size: 0.8vw;
+  font-size: 0.9vw;
   color: #aaa;
   margin: 3vh 0;
 }
@@ -54,16 +54,16 @@ p {
 }
 
 .login label {
-  font-size: 0.8vw;
+  font-size: 0.9vw;
   color: #aaa;
 }
 
 .login input {
   margin: 4vh 0;
   height: 6vh;
-  font-size: 0.8vw;
+  font-size: 0.9vw;
   border-radius: 0.2vw;
-  border: 1px solid #aaa;
+  border: 1px solid #1E425D;
   padding: 0 1vw;
   background: none;
 }
@@ -71,11 +71,11 @@ p {
 .login .submit {
   margin: 5vh 0;
   height: 6vh;
-  font-size: 0.8vw;
+  font-size: 0.9vw;
   border-radius: 0.2vw;
   border: none;
   padding: 0 1vw;
-  background-color: #0080fe;
+  background-color: #45B9FF;
   color: #eee;
 }
 
@@ -88,8 +88,8 @@ p {
 
 .sign a {
   margin: 0 1vw;
-  font-size: 0.8vw;
-  color: #0080fe;
+  font-size: 0.9vw;
+  color: #45B9FF;
   text-decoration: none;
 }
 
