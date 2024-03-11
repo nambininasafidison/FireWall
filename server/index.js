@@ -5,7 +5,6 @@ const bcrypt = require("bcrypt");
 const path = require("path");
 const { exec } = require("child_process");
 const session = require("express-session");
-const { createProxyMiddleware } = require("http-proxy-middleware");
 
 const app = express();
 const port = 3000;
@@ -48,16 +47,6 @@ app.use(
     saveUninitialized: false,
   })
 );
-
-app.use(
-  "/",
-  createProxyMiddleware({
-    target: "http://localhost:3000",
-    changeOrigin: true,
-  })
-);
-
-// app.use(checkSession);
 
 User.beforeCreate(async (user) => {
   const salt = await bcrypt.genSalt(10);
@@ -107,7 +96,8 @@ app.post("/logout", (req, res) => {
       console.error("Erreur lors de la suppression de la session :", err);
       res.status(500).send("Erreur lors de la suppression de la session.");
     } else {
-      req.session.user = null;
+      // req.session.user = null;
+      res.send('Error');
     }
   });
 });
@@ -173,13 +163,11 @@ async function authenticateUser(username, password) {
   }
 }
 
-port = 80;
 
 app.listen(port, () => {
   console.log(`Serveur en écoute sur le port ${port}`);
 });
 
-//santatraherimampionona@gmail.com
 
 // async function checkSession(req, res, next) {
 //   const user = req.session.user;

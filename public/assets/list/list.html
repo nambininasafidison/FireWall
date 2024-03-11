@@ -8,14 +8,14 @@
 </head>
   <body>
     <nav>
-      <div class="log"></div>
+      <button class="logout"><div class="log"></div></button>
       <p>Log out</p>
     </nav>
     <section class="main">
       <select name="policy" id="policy">
-        <option value="input">INPUT</option>
-        <option value="forward">FORWARD</option>
-        <option value="output">OUTPUT</option>
+        <option value="INPUT" selected>INPUT</option>
+        <option value="FORWARD">FORWARD</option>
+        <option value="OUTPUT">OUTPUT</option>
       </select>
       <p>
         You can see the list of all existing rules of your firewall
@@ -24,34 +24,37 @@
       <table>
         <thead>
           <tr>
-            <th></th>
-            <th>target</th>
-            <th>prot</th>
-            <th>opt</th>
-            <th>source</th>
-            <th>destination</th>
-            <th></th>
+            <th>Number</th>
+            <th>Target</th>
+            <th>Prot</th>
+            <th>Opt</th>
+            <th>Source</th>
+            <th>Destination</th>
+            <th>Others</th>
+            <th>Options</th>
           </tr>
         </thead>
         <tbody>
           <td>1</td>
-          <td>ufw</td>
+          <td>ACCEPT</td>
           <td>all</td>
           <td>--</td>
           <td>anywere</td>
           <td>anywere</td>
+          <td class="others">MAC23:2e:a4:00:90:01</td>
           <td class="action">
             <button class="modif"><div class="modifImg"></div></button>
             <button class="delete"><div class="trash"></div></button>
           </td>
         </tbody>
       </table>
-      <textarea name="" id="output" cols="30" rows="10"></textarea>
+      <!-- <textarea name="" id="output" cols="30" rows="10"></textarea> -->
       <div class="sign">
         <p>Navigate to home page?</p>
         <a href="../home/home.html">Home</a>
       </div>
     </section>
     <script src="index.js"></script>
+    <script src="../home/index.js"></script>
   </body>
 </html>

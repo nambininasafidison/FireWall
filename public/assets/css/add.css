@@ -114,6 +114,22 @@ p {
   font-weight: bolder;
 }
 
+.login .ioface{
+  display: none;
+  height: 3vh;
+  margin-top: -1.5vh;
+  margin-bottom: 1.5vh;
+}
+
+.login .ioface .iofaces{
+  display: flex;
+  align-items: center;
+}
+
+.login .ioface .iofaces label{
+  margin: 0 .5vw;
+}
+
 .login .check {
   display: flex;
 }
@@ -127,7 +143,7 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: -1vh;
+  margin-top: 3vh;
 }
 
 .sign a {
@@ -138,8 +154,9 @@ p {
 }
 
 .sign a:hover {
-  color: #9d0ec9;
+  color: #000;
   text-decoration: underline;
+  font-weight: bolder;
 }
 
 .multi {
@@ -189,10 +206,19 @@ p {
   border-radius: 0.2vw;
 }
 
+.multi #save {
+  position: absolute;
+  top: 54vh;
+}
+
 .multi .container {
-  max-height: 50vh;
+  max-height: 45vh;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+.multi .container input {
+  width: 17vw;
 }
 
 .multi .container::-webkit-scrollbar {

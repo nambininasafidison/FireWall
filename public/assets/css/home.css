@@ -68,7 +68,7 @@
   
   p {
     font-size: 2vw;
-    color: #ddd;
+    color: #0D3451;
     margin-bottom: 15vh;
     text-align: center;
     width: 40vw;
@@ -84,13 +84,13 @@
     height: 7vh;
     margin: 0 4vw;
     border: none;
-    background: none;
+    background-color: #45b9ff;
     border-radius: .3vw;
     font-size: 1.5vw;
   }
-
+  
   .link button:hover{
-    background-color: #45b9ff;
+    background-color: #0D3451;
   }
 
   .link a{
@@ -100,6 +100,5 @@
   }
 
   .link a:hover{
-    color: #9d0ec9;
-    text-decoration: underline;
+    color: #45b9ff;
   }

@@ -8,7 +8,7 @@
   </head>
   <body>
     <nav>
-      <div class="log"></div>
+      <button class="logout"><div class="log"></div></button>
       <p>Log out</p>
     </nav>
     <section class="main">
@@ -17,26 +17,43 @@
       </p>
       <p>You can add new rules for your firewall configuration.</p>
 
-      <form style="margin-top: 2vh;" class="login signup" action="" method="post">
+      <form
+        style="margin-top: 2vh"
+        class="login signup"
+        action=""
+        method="post"
+      >
         <label for="policy">Policy</label>
         <select name="policy" id="policy">
-          <option value="input">INPUT</option>
+          <option value="input" selected>INPUT</option>
           <option value="forward">FORWARD</option>
           <option value="output">OUTPUT</option>
         </select>
         <label for="sense">Sense</label>
         <select name="sense" id="sense">
-          <option value="accept">ACCEPT</option>
+          <option value="accept" selected>ACCEPT</option>
           <option value="reject">REJECT</option>
           <option value="drop">DROP</option>
         </select>
         <label for="interface">Interface</label>
         <select name="interface" id="interface">
-          <option value="none">none</option>
+          <option value="none" selected>none</option>
+          <option value="enp1s0">enp1s0</option>
         </select>
+        <div class="ioface">
+          <div class="iofaces">
+            <input type="checkbox" name="in" id="in" />
+            <label for="in">Input interface</label>
+            <input type="checkbox" name="out" id="out" />
+            <label for="out">Output interface</label>
+          </div>
+        </div>
         <label for="protocol">Protocol</label>
         <select name="protocol" id="protocol">
-          <option value="none">none</option>
+          <option value="none" selected>none</option>
+          <option value="icmp">icmp</option>
+          <option value="udp">udp</option>
+          <option value="tcp">tcp</option>
         </select>
         <input
           type="text"
@@ -48,23 +65,22 @@
           <input type="checkbox" name="agree" id="agree" />
           <label for="agree">Multi-port</label>
         </div>
-        <input type="text" name="ip" id="ip" placeholder="IP address" />
         <input type="text" name="mac" id="mac" placeholder="Mac address" />
         <input
           type="text"
           name="source"
           id="source"
-          placeholder="Source e.g: www.google.com"
+          placeholder="Source e.g: 192.217.21.34"
         />
         <input
           type="text"
           name="destination"
           id="destination"
-          placeholder="Destination e.g: www.youtube.com"
+          placeholder="Destination e.g: 172.216.0.2"
         />
         <div class="confirm">
-          <button class="cancel">Cancel</button>
-          <input type="submit" value="Add Rules" class="submit" />
+          <button class="cancel">Reset</button>
+          <input type="submit" value="Add Rules" class="submit" id="add" />
         </div>
       </form>
       <div class="sign">
@@ -86,7 +102,9 @@
         <button class="submit submitPorts">OK</button>
       </div>
       <div class="container"></div>
+      <button class="submit" id="save">Save</button>
     </section>
     <script src="index.js"></script>
+    <script src="../home/index.js"></script>
   </body>
 </html>

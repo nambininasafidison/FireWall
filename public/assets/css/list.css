@@ -13,7 +13,7 @@
   body {
     width: 100vw;
     height: 100vh;
-    /* overflow: hidden; */
+    overflow: hidden;
     background-image: url(../outils/fire.jpg);
     background-size: cover;
     background-position: center;
@@ -90,39 +90,58 @@ nav:hover p{
   border-spacing: 0 1vh;
 }
 
-.multi table::-webkit-scrollbar {
+.main table::-webkit-scrollbar {
   width: 0.3vw;
   margin: 0 0.3vw;
 }
-.multi table::-webkit-scrollbar-track {
+.main table::-webkit-scrollbar-track {
   background: #555;
   border-radius: 1vw;
 }
-.multi table::-webkit-scrollbar-thumb {
+.main table::-webkit-scrollbar-thumb {
   background: #222;
   border-radius: 1vw;
 }
 
 .main thead{
-  background-color: #0ccc2c;
+  background-color: #0D3451;
   text-align: left;
   color: #fff;
 }
 
 .main tbody{
-  color: #111;
-  background: none;
+  color: #0D3451;
+  background-color: #45b9ff;
   font-weight: bolder;
 }
 
 .main tr{
   height: 6vh;
-  box-shadow: 0 0 .6vw #45b9ff;
+  box-shadow: 0 0 .6vw #000;
 }
 
 .main td,th{
-  width: 15vw;
+  width: 11vw;
   padding-left: .5vw;
+}
+
+.main .others{
+  width: 11vw;
+  max-width: 11vw;
+  overflow-x: auto;
+}
+
+.main .others::-webkit-scrollbar {
+  width: 0.3vw;
+  margin: 0 0.3vw;
+}
+.main .others::-webkit-scrollbar-track {
+  background: #555;
+  border-radius: 1vw;
+}
+.main .others::-webkit-scrollbar-thumb {
+  background: #222;
+  border-radius: 1vw;
 }
 
 .main .action{
@@ -132,7 +151,7 @@ nav:hover p{
 }
 
 .main button{
-  background-color: #0ccc2c;
+  background-color: #0D3451;
   width: 3vw;
   padding: 1vh .9vw;
   margin-top: 1vh;
@@ -179,6 +198,7 @@ nav:hover p{
 }
 
 .sign a:hover {
-  color: #9d0ec9;
+  color: #0D3451;
   text-decoration: underline;
+  font-weight: bolder;
 }
