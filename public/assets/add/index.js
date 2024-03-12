@@ -17,19 +17,20 @@ iface.addEventListener("change", () => {
   }
 });
 
-reset.addEventListener("click", () => {
+reset.addEventListener("click", (e) => {
   e.preventDefault();
   const res = confirm("Do you want reset all ?");
   if (res) {
+    location.reload();
   }
 });
 
-add.addEventListener("submit", (e) => {
-  // e.preventDefault();
+add.addEventListener("click", (e) => {
+  e.preventDefault();
   const res = confirm("Do you want to continue ?");
-  // if (res) {
-  //   sendCommand();
-  // }
+  if (res) {
+    sendCommand();
+  }
 });
 
 port.addEventListener("change", () => {
@@ -45,7 +46,7 @@ subs.addEventListener("click", () => {
   const n = document.querySelector("#ports").value;
   const form = document.createElement("form");
   const container = document.querySelector(".container");
-  console.log(document.querySelector("#ports").max);
+  // console.log(document.querySelector("#ports").max);
   if (n <= +document.querySelector("#ports").max) {
     for (let i = 1; i <= n; i++) {
       const input = document.createElement("input");
@@ -63,18 +64,17 @@ subs.addEventListener("click", () => {
   }
 });
 
-function sendCommand() {
-  let commandInput = "sudo iptables -L";
+async function sendCommand() {
   const policy = "-A " + document.querySelector("#policy").value + " ";
-  const sense = "-j " + document.querySelector("#sense").value + " ";
+  const sense =
+    "-j " + document.querySelector("#sense").value.toUpperCase() + " ";
+  let allPort = "";
   const protocol =
     document.querySelector("#protocol").value == "none"
-      ? " "
+      ? ""
       : "-p " + document.querySelector("#protocol").value + " ";
-
   if (port.checked) {
     const n = document.querySelector("#ports").value;
-    const allPort = "";
     for (let i = 1; i <= n; i++) {
       const input = document.querySelector("#input" + i).value;
       allPort += i != 1 ? "," + input : input;
@@ -82,42 +82,60 @@ function sendCommand() {
   }
 
   const inter = document.querySelector("#interface");
-  const ifaces = " ";
-  if (inter.value != none)  {
-    ifaces = document.querySelector("#in").checked
+  let ifaces = "";
+  if (inter.value != "") {
+    ifaces += document.querySelector("#in").checked
       ? ifaces + "-i " + inter.value + " "
       : document.querySelector("#out").checked
       ? ifaces + "-o " + inter.value + " "
-      : " ";
+      : "";
   }
 
   let control =
-    document.querySelector("policy").value == "INPUT"
+    document.querySelector("#policy").value == "input"
       ? "--sports "
-      : document.querySelector("policy").value == "OUTPUT"
+      : document.querySelector("#policy").value == "output"
       ? "--dports "
-      : " ";
+      : "";
 
+  // console.log(document.querySelector("#policy").value);
   let control1 =
-    document.querySelector("policy").value == "INPUT"
+    document.querySelector("#policy").value == "input"
       ? "--sport "
-      : document.querySelector("policy").value == "OUTPUT"
+      : document.querySelector("#policy").value == "output"
       ? "--dport "
-      : " ";
+      : "";
+  // console.log("=>", control1);
 
-  const cmdPort = port.checked
-    ? "-m multi-port " + control + allPort + " "
-    : control1 + document.querySelector("#port").value + " ";
-    
+  const cmdPorts = port.checked
+    ? "-m multiport " + control + allPort + " "
+    : " ";
+  const cmdPort =
+    document.querySelector("#port").value != ""
+      ? control1 + document.querySelector("#port").value + " "
+      : "";
   const Mac = document.querySelector("#mac").value;
-  const mac = Mac != null ? "-m mac --mac-source " + Mac : " ";
+  const mac = Mac != "" ? "-m mac --mac-source " + Mac + " " : "";
   const Source = document.querySelector("#source").value;
-  const source = Mac != null ? "-s " + Source : " ";
+  const source = Source != "" ? "-s " + Source + " " : "";
   const Destination = document.querySelector("#destination").value;
-  const destination = Mac != null ? "-d " + Destination : " ";
-
-  // commandInput = 'sudo iptables '+policy+sense+protocol+cmdPort+mac+source+destination;
-
+  const destination = Destination != "" ? "-d " + Destination + " " : "";
+  const cport =
+    document.querySelector("#protocol").value != "none" ? cmdPort : "";
+  const cports =
+    document.querySelector("#protocol").value != "none" ? cmdPorts : "";
+  const commandePort = port.checked ? cports : cport;
+  console.log(cport);
+  const commandInput =
+    "sudo iptables " +
+    policy.toUpperCase() +
+    sense +
+    protocol +
+    commandePort +
+    mac +
+    source +
+    destination;
+  console.log(commandInput);
   fetch("/execute", {
     method: "POST",
     headers: {
@@ -127,7 +145,8 @@ function sendCommand() {
   })
     .then((response) => response.text())
     .then((data) => {
-      location.reload();
+      console.log(data);
+      // location.reload();
     })
     .catch((error) => {
       console.error("Error:", error);

@@ -1,9 +1,82 @@
 let results = {};
+const delAll = document.querySelector(".delall");
+delAll.addEventListener("click", () => {
+  const res = confirm("Are you sure to delete all exist rules ?");
+  if (res) {
+    sendCommand("sudo iptables -F");
+    alert("All rules deleted.");
+    location.reload();
+  }
+});
 
 window.onload = async () => {
-  results = await sendCommand();
+  results = await sendCommand("sudo iptables -L");
   createTable(results);
 };
+
+defaultPolicy();
+
+async function defaultPolicy() {
+  const sense = document.querySelector("#sense");
+  const dpolicy = document.querySelector("#policy");
+  sense.addEventListener("change", () => {
+    const chain = dpolicy.value;
+    const res = confirm("Do you want to change chain policy ?");
+    if (res) {
+      sendCommand("sudo iptables -P " + chain + " " + sense.value);
+      alert("Chain changed.");
+      location.reload();
+    }
+  });
+}
+
+async function makeRead(all, bool, modCmd) {
+  all.forEach((item) => {
+    item.readOnly = bool;
+    item.addEventListener("input", updateContent(all, modCmd));
+  });
+}
+
+function updateContent(all, modCmd) {
+  modCmd = Array.from(all)
+  .map((input) => input.value)
+  .join(" ");
+}
+
+async function rm(chain, del) {
+  const res = confirm("Are you sure to delete this rule ?");
+  if (res) {
+    removeRule(chain, del);
+  }
+}
+
+async function mv(valid, options, del, modif) {
+  const no = del.getAttribute("id").split("d")[1];
+  const all = document.querySelectorAll(".modifiable" + no);
+  const nodel = del;
+  const mod = modif;
+  // console.log(all, no);
+  let modCmd = "";
+
+  makeRead(all, false, modCmd);
+  console.log(modCmd);
+  
+  const res = confirm("Do you want to modify this rule ?");
+  let cmd = "sudo iptables -R " + no + " " + modCmd;
+  console.log(cmd);
+  if (res) {
+    del.remove();
+    modif.remove();
+    options.appendChild(valid);
+    valid.addEventListener("click", () => {
+      const response = confirm("Submit this change ?");
+      if (response) {
+        makeRead(all, true, modCmd);
+        modifyRule(cmd, options, valid, nodel, mod);
+      }
+    });
+  }
+}
 
 function removeRule(chain, number) {
   const removeCmd = "sudo iptables -D " + chain + " " + number;
@@ -17,7 +90,7 @@ function removeRule(chain, number) {
   })
     .then((response) => response.text())
     .then((data) => {
-      alert("Rule deleted");
+      alert("Rule deleted.");
       location.reload();
     })
     .catch((error) => {
@@ -25,8 +98,8 @@ function removeRule(chain, number) {
     });
 }
 
-function modifyRule(number) {
-  const removeCmd = "sudo iptables -R ";
+function modifyRule(cmd, options, valid, nodel, mod) {
+  const removeCmd = cmd;
 
   fetch("/execute", {
     method: "POST",
@@ -37,70 +110,107 @@ function modifyRule(number) {
   })
     .then((response) => response.text())
     .then((data) => {
-      alert("Rule deleted");
-      location.reload();
+      valid.remove();
+      options.appendChild(mod);
+      options.appendChild(nodel);
+      alert("Rule modified.");
+      // location.reload();
     })
     .catch((error) => {
       console.error("Error:", error);
     });
 }
 
-function createTable(results) {
+function createInput(input, i) {
+  input.type = "text";
+  input.readOnly = true;
+  input.classList.add("modifiable" + i);
+}
+
+async function createTable(results) {
   const tbody = document.querySelector("tbody");
-  const select = document.querySelector("select");
-  select.addEventListener("change", () => {
+  const policy = document.querySelector("#policy");
+  policy.addEventListener("change", () => {
     tbody.innerHTML = "";
-    const chain = select.value;
+    const chain = policy.value;
     let i = 1;
     if (results[chain]) {
       results[chain].map((item) => {
         const tr = document.createElement("tr");
         const number = document.createElement("td");
-        number.innerText = i;
+        number.classList.add("number");
+        const inPutN = document.createElement("input");
+        createInput(inPutN, i);
+        inPutN.value = i;
+        number.appendChild(inPutN);
 
         const target = document.createElement("td");
-        target.innerText = item.target;
+        const inPutT = document.createElement("input");
+        createInput(inPutT, i);
+        inPutT.value = item.target;
+        target.appendChild(inPutT);
 
         const prot = document.createElement("td");
-        prot.innerText = item.protocol;
+        const inPutP = document.createElement("input");
+        createInput(inPutP, i);
+        inPutP.value = item.protocol;
+        prot.appendChild(inPutP);
 
         const opt = document.createElement("td");
-        opt.innerText = item.opt;
+        const inPutO = document.createElement("input");
+        createInput(inPutO, i);
+        inPutO.value = item.opt;
+        opt.appendChild(inPutO);
 
         const source = document.createElement("td");
-        source.innerText = item.in;
+        const inPutS = document.createElement("input");
+        createInput(inPutS, i);
+        inPutS.value = item.in;
+        source.appendChild(inPutS);
 
         const destination = document.createElement("td");
-        destination.innerText = item.out;
+        const inPutD = document.createElement("input");
+        createInput(inPutD, i);
+        inPutD.value = item.out;
+        destination.appendChild(inPutD);
 
         const others = document.createElement("td");
         others.classList.add("others");
-        others.innerText = item.others;
+        const inPutOt = document.createElement("input");
+        createInput(inPutOt, i);
+        inPutOt.value = item.others;
+        others.appendChild(inPutOt);
 
         const options = document.createElement("td");
         options.classList.add("action");
 
+        const valid = document.createElement("button");
+        valid.classList.add("valid");
+        valid.setAttribute("id", "d" + i);
+
+        const Valid = document.createElement("div");
+        Valid.classList.add("Valid");
+        valid.appendChild(Valid);
+        valid.style.backgroundColor = "#0f0";
+
         const modif = document.createElement("button");
+        const del = document.createElement("button");
         modif.classList.add("modif");
         modif.addEventListener("click", () => {
-          const res = confirm("Do you want to modify this rule ?");
-          if (res) {
-          }
+          mv(valid, options, del, modif);
         });
+
         const modifImg = document.createElement("div");
         modifImg.classList.add("modifImg");
         modif.appendChild(modifImg);
         options.appendChild(modif);
 
-        const del = document.createElement("button");
         del.classList.add("delete");
-        del.addEventListener("click", (number) => {
-          const res = confirm("Are you sure to delete this rule ?");
-          console.log(chain, i);
-          if (res) {
-            removeRule(chain, i - 1);
-          }
+        del.setAttribute("id", "d" + i);
+        del.addEventListener("click", () => {
+          rm(chain, del);
         });
+
         const trash = document.createElement("div");
         trash.classList.add("trash");
         del.appendChild(trash);
@@ -121,8 +231,8 @@ function createTable(results) {
   });
 }
 
-function sendCommand() {
-  const commandInput = "sudo iptables -L";
+async function sendCommand(commandInput) {
+  // const commandInput = "sudo iptables -L";
   let result = {};
 
   fetch("/execute", {

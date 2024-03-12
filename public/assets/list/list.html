@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/list.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/list.css" />
     <title>List</title>
-</head>
+  </head>
   <body>
     <nav>
       <button class="logout"><div class="log"></div></button>
@@ -17,37 +17,44 @@
         <option value="FORWARD">FORWARD</option>
         <option value="OUTPUT">OUTPUT</option>
       </select>
+      <select name="sense" id="sense">
+        <option value="ACCEPT" selected>ACCEPT</option>
+        <option value="DROP">DROP</option>
+      </select>
+      <button class="delall">Delete all</button>
       <p>
         You can see the list of all existing rules of your firewall
         configuration.
       </p>
-      <table>
-        <thead>
-          <tr>
-            <th>Number</th>
-            <th>Target</th>
-            <th>Prot</th>
-            <th>Opt</th>
-            <th>Source</th>
-            <th>Destination</th>
-            <th>Others</th>
-            <th>Options</th>
-          </tr>
-        </thead>
-        <tbody>
-          <td>1</td>
-          <td>ACCEPT</td>
-          <td>all</td>
-          <td>--</td>
-          <td>anywere</td>
-          <td>anywere</td>
-          <td class="others">MAC23:2e:a4:00:90:01</td>
-          <td class="action">
-            <button class="modif"><div class="modifImg"></div></button>
-            <button class="delete"><div class="trash"></div></button>
-          </td>
-        </tbody>
-      </table>
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>Number</th>
+              <th>Target</th>
+              <th>Prot</th>
+              <th>Opt</th>
+              <th>Source</th>
+              <th>Destination</th>
+              <th>Others</th>
+              <th>Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- <td>1</td>
+            <td>ACCEPT</td>
+            <td>all</td>
+            <td>--</td>
+            <td>anywere</td>
+            <td>anywere</td>
+            <td class="others">MAC23:2e:a4:00:90:01</td>
+            <td class="action">
+              <button class="modif"><div class="modifImg"></div></button>
+              <button class="delete"><div class="trash"></div></button>
+            </td> -->
+          </tbody>
+        </table>
+      </div>
       <!-- <textarea name="" id="output" cols="30" rows="10"></textarea> -->
       <div class="sign">
         <p>Navigate to home page?</p>

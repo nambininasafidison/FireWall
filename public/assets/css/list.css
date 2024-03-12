@@ -75,6 +75,22 @@ nav:hover p{
   background: none;
 }
 
+.main .delall{
+  position: absolute;
+  top: -4vh;
+  left: 11vw;
+  width: 8vw;
+  color: #1E425D;
+  background-color: #f00;
+  font-size: 1vw;
+  font-weight: bolder;
+  height: 4vh;
+  padding: 0;
+}
+
+.main #sense{
+  left: 4vw;
+}
 
 .main p{
   text-align: center;
@@ -86,19 +102,25 @@ nav:hover p{
 .main table{
   width: 88vw;
   font-size: 1vw;
-  max-height: 75vh;
   border-spacing: 0 1vh;
 }
 
-.main table::-webkit-scrollbar {
-  width: 0.3vw;
-  margin: 0 0.3vw;
+.main .table{
+  max-height: 76vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-right: -.7vw;
 }
-.main table::-webkit-scrollbar-track {
+
+.main .table::-webkit-scrollbar {
+  width: 0.3vw;
+  margin: 0 1vw;
+}
+.main .table::-webkit-scrollbar-track {
   background: #555;
   border-radius: 1vw;
 }
-.main table::-webkit-scrollbar-thumb {
+.main .table::-webkit-scrollbar-thumb {
   background: #222;
   border-radius: 1vw;
 }
@@ -110,9 +132,20 @@ nav:hover p{
 }
 
 .main tbody{
-  color: #0D3451;
   background-color: #45b9ff;
+  color: #0D3451;
   font-weight: bolder;
+}
+
+.main tbody input{
+  background: none;
+  border: none;
+  width: 11vw;
+  padding: 0 .2vw;
+  height: 5vh;
+  color: #0D3451;
+  font-weight: bolder;
+  font-size: 1vw;
 }
 
 .main tr{
@@ -121,25 +154,27 @@ nav:hover p{
 }
 
 .main td,th{
-  width: 11vw;
   padding-left: .5vw;
 }
 
-.main .others{
+.main .others input{
   width: 11vw;
-  max-width: 11vw;
+  padding: 0 .1vw;
   overflow-x: auto;
 }
 
-.main .others::-webkit-scrollbar {
-  width: 0.3vw;
-  margin: 0 0.3vw;
+/* .main .others{
+  max-width: 11vw;
+} */
+
+.main .others input::-webkit-scrollbar {
+  height: .3vw;
 }
-.main .others::-webkit-scrollbar-track {
+.main .others input::-webkit-scrollbar-track {
   background: #555;
   border-radius: 1vw;
 }
-.main .others::-webkit-scrollbar-thumb {
+.main .others input::-webkit-scrollbar-thumb {
   background: #222;
   border-radius: 1vw;
 }
@@ -166,10 +201,19 @@ nav:hover p{
   background-size: cover;
   width: 1vw;
   height: 1vw;
+  margin-right: 2vw;
 }
 
 .main .trash{
   background-image: url(../outils/trash-alt.svg);
+  background-position: center;
+  background-size: cover;
+  width: 1vw;
+  height: 1vw;
+}
+
+.main .Valid{
+  background-image: url(../outils/check-circle.svg);
   background-position: center;
   background-size: cover;
   width: 1vw;
