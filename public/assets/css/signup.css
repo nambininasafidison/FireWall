@@ -64,8 +64,62 @@ p {
   font-size: 0.9vw;
   border-radius: 0.2vw;
   border: 1px solid #1E425D;
-  padding: 0 1vw;
+  padding: 0 3vw;
   background: none;
+  width: 100%;
+}
+
+.login .userContainer {
+  position: relative;
+}
+
+.login .userImg {
+  width: 4vh;
+  height: 4.5vh;
+  position: absolute;
+  top: 4.75vh;
+  left: 0.5vw;
+  background-image: url(../outils/user.svg);
+  background-position: center;
+  background-size: cover;
+}
+
+.login .passwdContainer {
+  position: relative;
+}
+
+.login .passwdImg {
+  width: 4vh;
+  height: 4.5vh;
+  position: absolute;
+  top: 4.75vh;
+  left: 0.5vw;
+  background-image: url(../outils/lock.svg);
+  background-position: center;
+  background-size: cover;
+  filter: brightness(0) hue-rotate(180deg);
+}
+
+.login .btnShow {
+  position: absolute;
+  top: 5.5vh;
+  right: 0.5vw;
+  background: none;
+  padding: 0.3vh 0.3vw;
+  border-radius: 0.3vw;
+  border: 1px solid #0d3451;
+}
+
+.login .btnShow:hover {
+  border: 1px solid #1e425d;
+}
+
+.login .passwdShow {
+  width: 2.5vh;
+  height: 2vh;
+  background-image: url(../outils/eye.svg);
+  background-position: center;
+  background-size: cover;
 }
 
 .login .submit {
@@ -84,7 +138,7 @@ p {
 }
 
 .login .check input {
-  margin: -0.9vw 0.5vw 0 0;
+  margin: -.7vw 0.5vw 0 0;
   width: 0.7vw;
 }
 

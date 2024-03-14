@@ -239,21 +239,30 @@ p {
   border-radius: 1vw;
 }
 
+nav {
+  position: absolute;
+  height: 5vh;
+  width: 10vw;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
 nav .log {
   background-image: url(../outils/sign-out-alt.svg);
   background-size: cover;
   background-position: center;
   width: 2.5vw;
   height: 2.5vw;
-  position: absolute;
-  top: 0.3vw;
-  right: 0.5vw;
+}
+
+nav button {
+  background: none;
+  border: none;
 }
 
 nav p {
-  position: absolute;
-  top: 0.5vh;
-  right: 4vw;
   border-radius: 0.2vw;
   font-size: 1.5vw;
   background: none;

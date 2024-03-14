@@ -1,19 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="assets/css/style.css" />
     <title>Connection</title>
-</head>
+  </head>
   <body>
     <section class="main">
-      <p><span style="color: #fff;">FireWall</span> | Configure network filter</p>
+      <p>
+        <span style="color: #fff">FireWall</span> | Configure network filter
+      </p>
       <h1>Log in to join the community</h1>
       <p>Welcome to the iptables configuration web site. <br /></p>
       <form class="login" id="loginForm" method="post">
-        <input type="text" id="loginUsername" name="username" placeholder="Your username" required>
-        <input type="password" id="loginPassword" name="password" required placeholder="Your password">
+        <div class="userContainer">
+          <div class="userImg"></div>
+          <input
+            type="text"
+            id="loginUsername"
+            name="username"
+            placeholder="Your username"
+            required
+          />
+        </div>
+        <div class="passwdContainer">
+          <div class="passwdImg"></div>
+          <input
+            type="password"
+            id="loginPassword"
+            name="password"
+            required
+            placeholder="Your password"
+          />
+          <button class="btnShow">
+            <div class="passwdShow"></div>
+          </button>
+        </div>
         <button type="submit" class="submit">Start Now</button>
       </form>
       <div class="sign">
@@ -25,7 +48,6 @@
     <script src="assets/index.js"></script>
   </body>
 </html>
-
 
 <div id="0080fe"></div>
 <div id="1134a6"></div>

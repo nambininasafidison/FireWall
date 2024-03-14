@@ -30,49 +30,54 @@ async function defaultPolicy() {
   });
 }
 
-async function makeRead(all, bool, modCmd) {
-  all.forEach((item) => {
-    item.readOnly = bool;
-    item.addEventListener("input", updateContent(all, modCmd));
-  });
-}
-
-function updateContent(all, modCmd) {
-  modCmd = Array.from(all)
-  .map((input) => input.value)
-  .join(" ");
-}
-
 async function rm(chain, del) {
+  const no = del.getAttribute("id").split("d")[1];
   const res = confirm("Are you sure to delete this rule ?");
   if (res) {
-    removeRule(chain, del);
+    removeRule(chain, no);
   }
 }
 
-async function mv(valid, options, del, modif) {
+function updateContent(all) {
+  return function () {
+    let modCmd = Array.from(all)
+      .map((input) => input.value)
+      .join(" ");
+    // console.log(modCmd);
+    return modCmd;
+  };
+}
+
+async function makeRead(all, bool) {
+  all.forEach((item) => {
+    item.readOnly = bool;
+    item.addEventListener("input", updateContent(all));
+  });
+}
+
+async function mv(valid, cancel, options, del, modif) {
   const no = del.getAttribute("id").split("d")[1];
   const all = document.querySelectorAll(".modifiable" + no);
-  const nodel = del;
-  const mod = modif;
-  // console.log(all, no);
   let modCmd = "";
 
-  makeRead(all, false, modCmd);
-  console.log(modCmd);
-  
-  const res = confirm("Do you want to modify this rule ?");
-  let cmd = "sudo iptables -R " + no + " " + modCmd;
-  console.log(cmd);
+  makeRead(all, false);
+
+  const res = confirm("Do you want to modify this rule?");
   if (res) {
+    modCmd = updateContent(all)();
+    let cmd =
+      "sudo iptables -R " + document.querySelector("#policy") + " " + modCmd;
+
     del.remove();
     modif.remove();
     options.appendChild(valid);
-    valid.addEventListener("click", () => {
-      const response = confirm("Submit this change ?");
+    options.appendChild(cancel);
+
+    valid.addEventListener("click", async () => {
+      const response = confirm("Submit this change?");
       if (response) {
-        makeRead(all, true, modCmd);
-        modifyRule(cmd, options, valid, nodel, mod);
+        await makeRead(all, true);
+        modifyRule(cmd, options, valid, cancel, del, modif);
       }
     });
   }
@@ -90,7 +95,7 @@ function removeRule(chain, number) {
   })
     .then((response) => response.text())
     .then((data) => {
-      alert("Rule deleted.");
+      alert("Rule deleted");
       location.reload();
     })
     .catch((error) => {
@@ -98,7 +103,7 @@ function removeRule(chain, number) {
     });
 }
 
-function modifyRule(cmd, options, valid, nodel, mod) {
+function modifyRule(cmd, options, valid, cancel, nodel, mod) {
   const removeCmd = cmd;
 
   fetch("/execute", {
@@ -111,10 +116,11 @@ function modifyRule(cmd, options, valid, nodel, mod) {
     .then((response) => response.text())
     .then((data) => {
       valid.remove();
+      cancel.remove();
       options.appendChild(mod);
       options.appendChild(nodel);
-      alert("Rule modified.");
-      // location.reload();
+      alert("Rule modified");
+      location.reload();
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -169,6 +175,7 @@ async function createTable(results) {
         source.appendChild(inPutS);
 
         const destination = document.createElement("td");
+
         const inPutD = document.createElement("input");
         createInput(inPutD, i);
         inPutD.value = item.out;
@@ -176,28 +183,65 @@ async function createTable(results) {
 
         const others = document.createElement("td");
         others.classList.add("others");
+        const showButton = document.createElement("button");
+        showButton.classList.add("showButton");
+
+        const showImg = document.createElement("div");
+        const containerOthers = document.createElement("div");
+        showImg.classList.add("showImg");
+        showButton.appendChild(showImg);
+
         const inPutOt = document.createElement("input");
         createInput(inPutOt, i);
         inPutOt.value = item.others;
-        others.appendChild(inPutOt);
+        containerOthers.classList.add("containerOthers");
+        const showExit = document.createElement("button");
+        showExit.classList.add("showExit");
+        showExit.innerText = "X";
+        containerOthers.appendChild(showExit);
+        containerOthers.appendChild(inPutOt);
+        showButton.addEventListener("click", (showButton, containerOthers) => {
+          showButton.style.display = "none";
+          containerOthers.style.display = "block";
+        });
+        showExit.addEventListener("click", (containerOthers) => {
+          containerOthers.style.display = "none";
+        });
+        others.appendChild(showButton);
+        others.appendChild(containerOthers);
 
         const options = document.createElement("td");
         options.classList.add("action");
 
         const valid = document.createElement("button");
         valid.classList.add("valid");
-        valid.setAttribute("id", "d" + i);
+        valid.setAttribute("id", "b" + i);
 
         const Valid = document.createElement("div");
         Valid.classList.add("Valid");
         valid.appendChild(Valid);
         valid.style.backgroundColor = "#0f0";
 
+        const cancel = document.createElement("button");
+        cancel.classList.add("cancel");
+        cancel.setAttribute("id", "b" + i);
+
+        const Cancel = document.createElement("div");
+        Cancel.classList.add("Cancel");
+        cancel.appendChild(Cancel);
+        cancel.style.backgroundColor = "#f00";
+        cancel.addEventListener("click", () => {
+          const res = confirm("Abandon modification ?");
+          if (res) {
+            location.reload();
+          }
+        });
+
         const modif = document.createElement("button");
         const del = document.createElement("button");
         modif.classList.add("modif");
         modif.addEventListener("click", () => {
-          mv(valid, options, del, modif);
+          mv(valid, cancel, options, del, modif);
         });
 
         const modifImg = document.createElement("div");

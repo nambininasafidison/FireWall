@@ -1,30 +1,38 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const signupForm = document.getElementById("signupForm");
+const signupForm = document.querySelector(".submit");
+const username = document.getElementById("signupUsername").value;
+const password = document.getElementById("signupPassword").value;
+const passwd = document.getElementById("signupPassword");
 
-  signupForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
+const show = document.querySelector(".btnShow");
+const icon = document.querySelector(".passwdShow");
 
-    const username = document.getElementById("signupUsername").value;
-    const password = document.getElementById("signupPassword").value;
-    try {
-      let res = confirm("Are you sure to register ?");
-      let response;
-      if (res) {
-        response = await fetch("http://localhost:3000/signup", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username: username, password: password }),
-        });
-      }
+show.addEventListener("click", (e) => {
+  e.preventDefault();
+  if (passwd.type === "password") {
+    passwd.type = "text";
+    icon.style.backgroundImage = 'url("/assets/outils/eye-slash.svg")';
+  } else {
+    passwd.type = "password";
+    icon.style.backgroundImage = 'url("/assets/outils/eye.svg")';
+  }
+});
 
-      let data = await response.text();
-      data = JSON.parse(data);
-      console.log(data);
+signupForm.addEventListener("click", async (event) => {
+  event.preventDefault();
+
+  try {
+    let res = confirm("Are you sure to register ?");
+    if (res) {
+      fetch("http://localhost:3000/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username: username, password: password }),
+      });
       window.location.href = "http://localhost:3000/";
-    } catch (error) {
-      console.error("Error:", error);
     }
-  });
+  } catch (error) {
+    console.error("Error:", error);
+  }
 });

@@ -8,27 +8,38 @@
   </head>
   <body>
     <section class="main">
-      <p><span style="color: #fff;">FireWall</span> | Configure network filter</p>
+      <p>
+        <span style="color: #fff">FireWall</span> | Configure network filter
+      </p>
       <h1>Register to join the commuinity</h1>
       <p>
         Welcome to the iptables configuration web site. <br />Register as member
         to experience.
       </p>
       <form class="login signup" id="signupForm" method="post">
-        <input
-          type="text"
-          id="signupUsername"
-          name="username"
-          placeholder="Your username"
-          required
-        />
-        <input
-          type="password"
-          id="signupPassword"
-          name="password"
-          required
-          placeholder="Your password"
-        />
+        <div class="userContainer">
+          <div class="userImg"></div>
+          <input
+            type="text"
+            id="signupUsername"
+            name="username"
+            placeholder="Your username"
+            required
+          />
+        </div>
+        <div class="passwdContainer">
+          <div class="passwdImg"></div>
+          <input
+            type="password"
+            id="signupPassword"
+            name="password"
+            required
+            placeholder="Your password"
+          />
+          <button class="btnShow">
+            <div class="passwdShow"></div>
+          </button>
+        </div>
         <div class="check">
           <input type="checkbox" name="agree" id="agree" />
           <label for="agree"
