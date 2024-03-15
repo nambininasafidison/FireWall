@@ -1,38 +1,60 @@
-const signupForm = document.querySelector(".submit");
-const username = document.getElementById("signupUsername").value;
-const password = document.getElementById("signupPassword").value;
-const passwd = document.getElementById("signupPassword");
+document.addEventListener("DOMContentLoaded", () => {
+  const signupForm = document.querySelector("#signupForm");
 
-const show = document.querySelector(".btnShow");
-const icon = document.querySelector(".passwdShow");
-
-show.addEventListener("click", (e) => {
-  e.preventDefault();
-  if (passwd.type === "password") {
-    passwd.type = "text";
-    icon.style.backgroundImage = 'url("/assets/outils/eye-slash.svg")';
-  } else {
-    passwd.type = "password";
-    icon.style.backgroundImage = 'url("/assets/outils/eye.svg")';
+  if (!signupForm) {
+    console.error("Signup form not found.");
+    return;
   }
-});
 
-signupForm.addEventListener("click", async (event) => {
-  event.preventDefault();
+  const usernameInput = document.getElementById("signupUsername");
+  const passwordInput = document.getElementById("signupPassword");
+  const passwd = document.getElementById("signupPassword");
+  const show = document.querySelector(".btnShow");
+  const icon = document.querySelector(".passwdShow");
 
-  try {
-    let res = confirm("Are you sure to register ?");
-    if (res) {
-      fetch("http://localhost:3000/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username: username, password: password }),
-      });
-      window.location.href = "http://localhost:3000/";
+  if (!usernameInput || !passwordInput || !show || !icon) {
+    console.error("Required elements not found.");
+    return;
+  }
+
+  show.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (passwd.type === "password") {
+      passwd.type = "text";
+      icon.style.backgroundImage = 'url("/assets/outils/eye-slash.svg")';
+    } else {
+      passwd.type = "password";
+      icon.style.backgroundImage = 'url("/assets/outils/eye.svg")';
     }
-  } catch (error) {
-    console.error("Error:", error);
-  }
+  });
+
+  signupForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const username = usernameInput.value;
+    const password = passwordInput.value;
+
+    try {
+      let res = confirm("Are you sure you want to register?");
+      if (res) {
+        const response = await fetch("http://localhost:3000/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+        });
+
+        if (response.ok) {
+          window.location.href = "http://localhost:3000/";
+        } else {
+          console.error("Server error:", response.statusText);
+          alert("An error occurred during registration.");
+        }
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  });
 });
+

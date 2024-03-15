@@ -194,19 +194,24 @@ async function createTable(results) {
         const inPutOt = document.createElement("input");
         createInput(inPutOt, i);
         inPutOt.value = item.others;
+
         containerOthers.classList.add("containerOthers");
         const showExit = document.createElement("button");
         showExit.classList.add("showExit");
         showExit.innerText = "X";
         containerOthers.appendChild(showExit);
         containerOthers.appendChild(inPutOt);
-        showButton.addEventListener("click", (showButton, containerOthers) => {
+
+        showButton.addEventListener("click", () => {
           showButton.style.display = "none";
           containerOthers.style.display = "block";
         });
-        showExit.addEventListener("click", (containerOthers) => {
+
+        showExit.addEventListener("click", () => {
           containerOthers.style.display = "none";
+          showButton.style.display = "block";
         });
+
         others.appendChild(showButton);
         others.appendChild(containerOthers);
 
