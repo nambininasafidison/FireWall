@@ -117,7 +117,7 @@ p {
 .login .passwdShow {
   width: 2.5vh;
   height: 2vh;
-  background-image: url(../outils/eye.svg);
+  background-image: url(../outils/eye-slash.svg);
   background-position: center;
   background-size: cover;
 }

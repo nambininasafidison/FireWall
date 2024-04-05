@@ -9,6 +9,12 @@ delAll.addEventListener("click", () => {
   }
 });
 
+const linkHome = document.querySelector(".sign a");
+linkHome.addEventListener("click", (e) => {
+  e.preventDefault();
+  window.location.href = "/assets/home/home.html";
+});
+
 window.onload = async () => {
   results = await sendCommand("sudo iptables -L");
   createTable(results);
@@ -88,7 +94,6 @@ async function mv(valid, cancel, options, del, modif) {
     });
   }
 }
-
 
 function removeRule(chain, number) {
   const removeCmd = "sudo iptables -D " + chain + " " + number;

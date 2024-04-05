@@ -6,6 +6,12 @@ const save = document.querySelector("#save");
 const iface = document.querySelector("#interface");
 const mac = document.getElementById("mac");
 
+const linkHome = document.querySelector(".sign a");
+linkHome.addEventListener("click", (e) => {
+  e.preventDefault();
+  window.location.href = "/assets/home/home.html";
+});
+
 mac.addEventListener("input", (e) => {
   var regex = /^([0-9A-Fa-f]{2}[:-]){0,5}([0-9A-Fa-f]{0,2})$/;
   var valid = regex.test(e.target.value);

@@ -21,10 +21,10 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     if (passwd.type === "password") {
       passwd.type = "text";
-      icon.style.backgroundImage = 'url("/assets/outils/eye-slash.svg")';
+      icon.style.backgroundImage = 'url("/assets/outils/eye.svg")';
     } else {
       passwd.type = "password";
-      icon.style.backgroundImage = 'url("/assets/outils/eye.svg")';
+      icon.style.backgroundImage = 'url("/assets/outils/eye-slash.svg")';
     }
   });
 

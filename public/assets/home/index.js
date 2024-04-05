@@ -1,5 +1,13 @@
 const logout = document.querySelector(".logout");
 
+const links = document.querySelectorAll(".link a");
+links.forEach((link) => {
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+    window.location.href = link.href
+  });
+});
+
 logout.addEventListener("click", async (event) => {
   event.preventDefault();
 
@@ -15,7 +23,7 @@ logout.addEventListener("click", async (event) => {
         .then((response) => response.text())
         .then((data) => {
           // alert(data);
-          // window.location.href = "/";
+          window.location.href = "/";
         })
         .catch((error) => {
           console.error("Error:", error);
