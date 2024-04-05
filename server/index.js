@@ -3,22 +3,17 @@ const cors = require("cors");
 const Sequelize = require("sequelize");
 const bcrypt = require("bcrypt");
 const path = require("path");
-const { exec } = require("child_process");
-const session = require("express-session");
+const jwt = require('jsonwebtoken'); 
 
 const app = express();
 const port = 3000;
+
+const secretKey = 'votre_secret_jwt';
 
 const sequelize = new Sequelize("iptables", "firewall", "123qwerty", {
   host: "localhost",
   dialect: "postgres",
 });
-
-const noAuthPages = [
-  "/index.html",
-  "/assets/home/home.html",
-  "/assets/signup/signup.html",
-];
 
 const User = sequelize.define("user", {
   username: {
@@ -32,21 +27,31 @@ const User = sequelize.define("user", {
   },
 });
 
+function verifyToken(req, res, next) {
+  const token = req.headers['authorization']?.split(' ')[1];
+  if (!token) {
+    return res.status(403).send('Un token est requis pour l\'authentification');
+  }
+  try {
+    const decoded = jwt.verify(token, secretKey);
+    req.user = decoded;
+    next();
+  } catch (err) {
+    return res.status(401).send('Token invalide');
+  }
+}
+
+app.use('/api', verifyToken);
+
+app.use("/", express.static(path.join(__dirname, "..", "public")));
+
+app.use(express.json());
+
+app.use(cors());
+
 app.get("/", (req, res) => {
   res.sendFile("index.html", { root: path.join(__dirname, "..", "public") });
 });
-
-app.use("/", express.static(path.join(__dirname, "..", "public")));
-app.use(express.json());
-app.use(cors());
-
-app.use(
-  session({
-    secret: "social",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
 
 User.beforeCreate(async (user) => {
   const salt = await bcrypt.genSalt(10);
@@ -59,47 +64,32 @@ User.prototype.validPassword = async function (password) {
 
 app.post("/signup", async (req, res) => {
   const { username, password } = req.body;
-  console.log(req.body);
-
   try {
     const user = await createUser(username, password);
-    res.status(201).json({ message: "User created", user: user });
+    const token = jwt.sign({ id: user.id, username: user.username }, secretKey, { expiresIn: '1h' }); 
+    res.status(201).json({ message: "Utilisateur créé", user: user, token: token });
   } catch (error) {
-    res.status(500).json({ message: "Error to create user", error: error });
+    res.status(500).json({ message: "Erreur lors de la création de l'utilisateur", error: error });
   }
 });
 
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
-
   try {
     const user = await authenticateUser(username, password);
     if (user) {
-      req.session.user = user;
-      res.status(200).json({ message: "Utilisateur authentifié", user: user });
+      const token = jwt.sign({ id: user.id, username: user.username }, secretKey, { expiresIn: '1h' }); 
+      res.status(200).json({ message: "Utilisateur authentifié", user: user, token: token });
     } else {
-      res
-        .status(401)
-        .json({ message: "Utilisateur non trouvé ou mot de passe incorrect" });
+      res.status(401).json({ message: "Utilisateur non trouvé ou mot de passe incorrect" });
     }
   } catch (error) {
-    res.status(500).json({
-      message: "Erreur lors de l'authentification de l'utilisateur",
-      error: error,
-    });
+    res.status(500).json({ message: "Erreur lors de l'authentification", error: error });
   }
 });
 
 app.post("/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      console.error("Erreur lors de la suppression de la session :", err);
-      res.status(500).send("Erreur lors de la suppression de la session.");
-    } else {
-      // req.session.user = null;
-      res.send('Error');
-    }
-  });
+  res.status(200).send("Déconnexion réussie.");
 });
 
 app.post("/execute", (req, res) => {
@@ -108,16 +98,12 @@ app.post("/execute", (req, res) => {
   runCommand(command, res);
 });
 
-sequelize
-  .sync({ alter: true })
+sequelize.sync({ alter: true })
   .then(() => {
     console.log("Base de données synchronisée.");
   })
   .catch((error) => {
-    console.error(
-      "Erreur lors de la synchronisation de la base de données:",
-      error
-    );
+    console.error("Erreur lors de la synchronisation de la base de données:", error);
   });
 
 async function createUser(username, password) {
@@ -125,8 +111,15 @@ async function createUser(username, password) {
     username: username,
     password: password,
   });
-  console.log("Utilisateur créé :", user);
   return user;
+}
+
+async function authenticateUser(username, password) {
+  const user = await User.findOne({ where: { username: username } });
+  if (user && await user.validPassword(password)) {
+    return user; 
+  }
+  return null;
 }
 
 async function runCommand(command, res) {
@@ -147,38 +140,6 @@ async function runCommand(command, res) {
   });
 }
 
-async function authenticateUser(username, password) {
-  const user = await User.findOne({ where: { username: username } });
-  if (!user) {
-    console.log("Utilisateur non trouvé.");
-    return null;
-  }
-  const isValidPassword = await user.validPassword(password);
-  if (isValidPassword) {
-    console.log("Utilisateur authentifié :", user);
-    return user;
-  } else {
-    console.log("Mot de passe incorrect.");
-    return null;
-  }
-}
-
-
 app.listen(port, () => {
-  console.log(`Serveur en écoute sur le port ${port}`);
+  console.log(`Serveur démarré sur http://localhost:${port}`);
 });
-
-
-// async function checkSession(req, res, next) {
-//   const user = req.session.user;
-//   const isLoggedIn = user != null;
-//   const path = req.path;
-//   const isNoAuthPage = noAuthPages.includes(path);
-//   if (isLoggedIn && isNoAuthPage) {
-//     res.redirect("/assets/list/list.html");
-//   } else if (!isLoggedIn && !isNoAuthPage) {
-//     res.redirect("/index.html");
-//   } else {
-//     next();
-//   }
-// }

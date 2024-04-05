@@ -52,11 +52,11 @@ document.addEventListener("DOMContentLoaded", () => {
         return response.json();
       })
       .then(data => {
-        console.log('Success:', data);
+        // console.log('Success:', data);
         window.location.href = "http://localhost:3000/assets/home/home.html";
       })
       .catch((error) => {
-        console.error('Error:', error.message);
+        // console.error('Error:', error.message);
         if (error.message === 'Invalid credentials or server error') {
           alert('Invalid credentials. Please try again.');
         } else {

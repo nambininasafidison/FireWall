@@ -4,6 +4,18 @@ const add = document.querySelector("#add");
 const reset = document.querySelector(".cancel");
 const save = document.querySelector("#save");
 const iface = document.querySelector("#interface");
+const mac = document.getElementById("mac");
+
+mac.addEventListener("input", (e) => {
+  var regex = /^([0-9A-Fa-f]{2}[:-]){0,5}([0-9A-Fa-f]{0,2})$/;
+  var valid = regex.test(e.target.value);
+  var parts = e.target.value.split(/[:-]/);
+
+  if (!valid || parts.some(part => part.length > 2)) {
+    e.target.value = e.target.value.substring(0, e.target.value.length - 1);
+  }
+});
+
 
 iface.addEventListener("change", () => {
   const ioface = document.querySelector(".ioface");
@@ -18,7 +30,7 @@ iface.addEventListener("change", () => {
 });
 
 reset.addEventListener("click", (e) => {
-  e.preventDefault();
+  // e.preventDefault();
   const res = confirm("Do you want reset all ?");
   if (res) {
     location.reload();
@@ -96,23 +108,17 @@ async function sendCommand() {
       ? "--sports "
       : document.querySelector("#policy").value == "output"
       ? "--dports "
-      : "";
+      : "--dports ";
+  console.log(document.querySelector("#policy").value);
 
-  // console.log(document.querySelector("#policy").value);
-  let control1 =
-    document.querySelector("#policy").value == "input"
-      ? "--sport "
-      : document.querySelector("#policy").value == "output"
-      ? "--dport "
-      : "";
-  // console.log("=>", control1);
+  console.log("=>", control);
 
   const cmdPorts = port.checked
     ? "-m multiport " + control + allPort + " "
     : " ";
   const cmdPort =
     document.querySelector("#port").value != ""
-      ? control1 + document.querySelector("#port").value + " "
+      ? control + document.querySelector("#port").value + " "
       : "";
   const Mac = document.querySelector("#mac").value;
   const mac = Mac != "" ? "-m mac --mac-source " + Mac + " " : "";

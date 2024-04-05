@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (response.ok) {
           window.location.href = "http://localhost:3000/";
         } else {
-          console.error("Server error:", response.statusText);
+          // console.error("Server error:", response.statusText);
           alert("An error occurred during registration.");
         }
       }

@@ -112,13 +112,15 @@ nav p {
   max-height: 76vh;
   overflow-y: auto;
   overflow-x: hidden;
-  margin-right: -0.7vw;
+  padding-right: 0.5vw;
 }
 
 .main .table::-webkit-scrollbar {
   width: 0.3vw;
   margin: 0 1vw;
 }
+
+
 .main .table::-webkit-scrollbar-track {
   background: #555;
   border-radius: 1vw;
@@ -169,6 +171,7 @@ th {
 
 .main .others {
   height: 6vh;
+  position: relative;
 }
 
 .main button {
@@ -215,41 +218,42 @@ th {
 }
 
 .main .containerOthers {
-  position: absolute;
-  background-color: #0d3451;
-  border-radius: 0.5vw;
-  width: 20vw;
-  height: 20vh;
-  top: 40vh;
-  left: 35vw;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 2vh 2vw;
   display: none;
+  position: absolute;
+  top: 0;
+  right: 1vw;
+}
+
+.main .divcontainer {
+  height: 6vh;
+  border-radius: 0.5vw;
+  padding: 0 0.5vw;
+  background-color: #0d3451;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .main .containerOthers .showExit {
-  position: relative;
-  top: -7vh;
-  right: -8vw;
   border: 2px solid #1e425d;
   font-weight: bolder;
   font-size: 1vw;
   height: 4vh;
+  margin-top: -0.25vh;
   padding: 0;
   color: #fff;
 }
 
 .main .containerOthers .showExit:hover {
   background-color: #f00;
-  color: #000;
+  color: #45b9ff;
+  border: none;
 }
 
 .main .containerOthers input {
   color: #fff;
-  margin-top: -4vh;
+  margin-right: 0.5vw;
+  padding: 0 0.5vw;
 }
 
 .main .showButton {

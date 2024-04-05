@@ -40,17 +40,25 @@ async function rm(chain, del) {
 
 function updateContent(all) {
   return function () {
-    let modCmd = Array.from(all)
-      .map((input) => input.value)
-      .join(" ");
-    // console.log(modCmd);
-    return modCmd;
+    let modCmd = Array.from(all).map((input) => input.value);
+    let policy = document.querySelector("#policy").value;
+    policy = policy.toUpperCase();
+    const no = modCmd[0];
+    const target = " -j " + modCmd[1] + " ";
+    const prot = modCmd[2] !== "all" ? "-p " + modCmd[2] + " " : "";
+    const source = modCmd[3] !== "anywhere" ? "-s " + modCmd[3] + " " : "";
+    const dest = modCmd[4] !== "anywhere" ? "-d " + modCmd[4] + " " : "";
+    const cmd =
+      "sudo iptables -R " + policy + " " + no + target + prot + source + dest;
+
+    return cmd;
   };
 }
 
 async function makeRead(all, bool) {
   all.forEach((item) => {
     item.readOnly = bool;
+    item.removeEventListener("input", updateContent(all));
     item.addEventListener("input", updateContent(all));
   });
 }
@@ -60,28 +68,27 @@ async function mv(valid, cancel, options, del, modif) {
   const all = document.querySelectorAll(".modifiable" + no);
   let modCmd = "";
 
-  makeRead(all, false);
+  await makeRead(all, false);
 
   const res = confirm("Do you want to modify this rule?");
   if (res) {
     modCmd = updateContent(all)();
-    let cmd =
-      "sudo iptables -R " + document.querySelector("#policy") + " " + modCmd;
 
     del.remove();
     modif.remove();
     options.appendChild(valid);
     options.appendChild(cancel);
-
+    console.log(modCmd);
     valid.addEventListener("click", async () => {
       const response = confirm("Submit this change?");
       if (response) {
         await makeRead(all, true);
-        modifyRule(cmd, options, valid, cancel, del, modif);
+        modifyRule(modCmd, options, valid, cancel, del, modif);
       }
     });
   }
 }
+
 
 function removeRule(chain, number) {
   const removeCmd = "sudo iptables -D " + chain + " " + number;
@@ -113,14 +120,17 @@ function modifyRule(cmd, options, valid, cancel, nodel, mod) {
     },
     body: JSON.stringify({ command: removeCmd }),
   })
-    .then((response) => response.text())
-    .then((data) => {
-      valid.remove();
-      cancel.remove();
-      options.appendChild(mod);
-      options.appendChild(nodel);
-      alert("Rule modified");
-      location.reload();
+    .then((response) => {
+      if (response.ok) {
+        valid.remove();
+        cancel.remove();
+        options.appendChild(mod);
+        options.appendChild(nodel);
+        alert("Rule modified");
+        location.reload();
+      } else {
+        alert("An error occured");
+      }
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -162,12 +172,6 @@ async function createTable(results) {
         inPutP.value = item.protocol;
         prot.appendChild(inPutP);
 
-        const opt = document.createElement("td");
-        const inPutO = document.createElement("input");
-        createInput(inPutO, i);
-        inPutO.value = item.opt;
-        opt.appendChild(inPutO);
-
         const source = document.createElement("td");
         const inPutS = document.createElement("input");
         createInput(inPutS, i);
@@ -186,6 +190,7 @@ async function createTable(results) {
         const showButton = document.createElement("button");
         showButton.classList.add("showButton");
 
+        const divcontainer = document.createElement("div");
         const showImg = document.createElement("div");
         const containerOthers = document.createElement("div");
         showImg.classList.add("showImg");
@@ -197,10 +202,12 @@ async function createTable(results) {
 
         containerOthers.classList.add("containerOthers");
         const showExit = document.createElement("button");
+        divcontainer.classList.add("divcontainer");
         showExit.classList.add("showExit");
         showExit.innerText = "X";
-        containerOthers.appendChild(showExit);
-        containerOthers.appendChild(inPutOt);
+        divcontainer.appendChild(inPutOt);
+        divcontainer.appendChild(showExit);
+        containerOthers.appendChild(divcontainer);
 
         showButton.addEventListener("click", () => {
           showButton.style.display = "none";
@@ -268,7 +275,6 @@ async function createTable(results) {
         tr.appendChild(number);
         tr.appendChild(target);
         tr.appendChild(prot);
-        tr.appendChild(opt);
         tr.appendChild(source);
         tr.appendChild(destination);
         tr.appendChild(others);

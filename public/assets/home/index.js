@@ -14,12 +14,12 @@ logout.addEventListener("click", async (event) => {
       })
         .then((response) => response.text())
         .then((data) => {
-          alert(data);
+          // alert(data);
+          // window.location.href = "/";
         })
         .catch((error) => {
           console.error("Error:", error);
         });
-      window.location.href = "/";
     }
   } catch (error) {
     console.error("Error:", error);
